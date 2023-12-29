@@ -1,0 +1,303 @@
+@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300);
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-weight: 300;
+}
+html{
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Source Sans Pro', sans-serif;
+    color: white;
+    font-weight: 300;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Chrome, Opera, Safari用 */
+::-webkit-input-placeholder {
+    color:rgb(245, 247, 249);
+}
+
+/* Firefox 19+ 用 */
+::-moz-placeholder {
+    color: rgb(245, 247, 249);
+    opacity: 1; /* Firefoxはデフォルトで透明度を設定しているので、1にリセットする */
+}
+
+/* Firefox 18以下用 */
+:-moz-placeholder {
+    color: rgb(245, 247, 249);
+    opacity: 1;
+}
+
+/* Internet Explorer 10+ 用 */
+:-ms-input-placeholder {
+    color: rgb(245, 247, 249);
+}
+
+
+.wrapper {
+    background: #1e3c72; /* 濃い青色 */
+    background: -webkit-linear-gradient(to bottom, #2a5298, #1e3c72); /* グラデーション */
+    background: linear-gradient(to bottom, #2a5298, #1e3c72); 
+    position: absolute;
+    top: 30.5%;
+    left: 0;
+    width: 100%;
+    height: 400px;
+    margin-top: -200px;
+    overflow: hidden;
+    min-height: 100%;
+}
+
+.wrapper.form-success .container h1 {
+    transform: translateY(85px);
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 80px 0;
+    text-align: center;
+}
+
+.container h1 {
+    font-size: 40px;
+    transition-duration: 1s;
+    transition-timing-function: ease-in-put;
+    font-weight: 200;
+}
+
+/* 登録していない方へのリンクのスタイル */
+.container a {
+    color: rgb(245, 247, 249); /* テキストの色を白に設定 */
+    text-decoration: none; /* アンダーラインを消去 */
+}
+
+.container a:hover {
+    text-decoration: underline; /* ホバー時にアンダーラインを表示 */
+}
+
+
+form {
+    padding: 50px 0;
+    position: relative;
+    z-index: 2;
+    background-color: rgba(255, 255, 255, 0.15); /* フォームの背景色 */
+    border-radius: 15px; /* フォーム全体の角を丸くする */
+    padding: 30px; /* フォーム内の余白 */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* ソフトなボックスシャドウを追加 */
+    max-width: 400px; /* フォームの最大幅 */
+    margin: auto; /* 中央寄せ */
+}
+.form input,
+.form button {
+    margin-bottom: 20px; /* 要素の下に15pxのマージンを追加 */
+}
+
+/* ラベルとチェックボックス間のスペースを調整 */
+.form .form-group label {
+    margin-left: 5px;
+}
+    
+    form div input{
+      display: block;
+      outline: 0;
+
+      border: 2px solid rgba(255, 255, 255, 0.5);
+      background-color: rgba(255, 255, 255, 0.1); 
+      color: #fff; /* テキスト色を白に */
+      width: 250px;
+      
+      border-radius: 3px;
+      padding: 10px 15px;
+      margin: 0 auto 10px auto;
+      text-align: center;
+      font-size: 18px;
+      
+      transition-duration: 0.25s;
+      font-weight: 300;
+    }
+      
+    form div input:hover{
+        background-color: rgb(245, 247, 249);
+      }
+      
+    form div input:focus{
+        background-color: white;
+        width: 300px;
+        color: #53e3a6;
+      }
+    
+    form button{
+      appearance: none;
+      outline: 0;
+      background-color: white;
+      border: 0;
+      padding: 10px 15px;
+      border-radius: 3px;
+      width: 250px;
+      color: #53e3a6;
+      cursor: pointer;
+      font-size: 18px;
+      transition-duration: 0.25s;
+    }
+    form button:hover{
+        background-color: rgb(245, 247, 249);
+      }
+
+    /* セレクトボックスの基本スタイル */
+select {
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #f2f2f2; /* 薄い境界線 */
+    border-radius: 20px; /* 丸みを持たせる */
+    background-color: #f9f9f9; /* 薄い背景色 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* ソフトな影を追加 */
+    outline: none; /* フォーカス時のアウトラインを無効化 */
+    cursor: pointer; /* カーソルをポインタに変更 */
+}
+
+/* ホバー時のスタイル */
+select:hover {
+    background-color: #e9e9e9; /* ホバー時の背景色 */
+}
+
+/* フォーカス時のスタイル */
+select:focus {
+    border-color: #a0a0a0; /* フォーカス時の境界線の色 */
+}
+
+/* オプションのスタイル */
+option {
+    padding: 10px; /* オプションにパディングを追加 */
+}
+  
+  .bg-bubbles{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+    z-index: 1;
+  }
+
+  .bg-bubbles li {
+    position: absolute;
+    list-style: none;
+    display: block;
+    border-radius: 50%; /* 円形にする */
+    opacity: 0.6; /* 半透明にする */
+    background-color: #fff; /* 白色にする */
+    -webkit-animation: snowfall 8s linear infinite;
+    animation: snowfall 8s linear infinite;
+    /* 初期位置を画面の外に設定 */
+    transform: translateY(-100vh);
+}
+
+    /* 各雪の結晶の位置、サイズ、アニメーション遅延を調整 */
+.bg-bubbles li:nth-child(1) {
+    left: 10%;
+    width: 60px;
+    height: 60px;
+    animation-delay: 0s;
+    animation-duration: 8s;
+}
+      
+.bg-bubbles li:nth-child(2) {
+    left: 20%;
+    width: 50px;
+    height: 50px;
+    animation-delay: 1s;
+    animation-duration: 9s;
+}
+
+.bg-bubbles li:nth-child(3) {
+    left: 30%;
+    width: 55px;
+    height: 55px;
+    animation-delay: 1.5s;
+    animation-duration: 10s;
+}
+
+.bg-bubbles li:nth-child(4) {
+    left: 40%;
+    width: 45px;
+    height: 45px;
+    animation-delay: 0.5s;
+    animation-duration: 8s;
+}
+
+.bg-bubbles li:nth-child(5) {
+    left: 50%;
+    width: 60px;
+    height: 60px;
+    animation-delay: 0s;
+    animation-duration: 9s;
+}
+
+.bg-bubbles li:nth-child(6) {
+    left: 60%;
+    width: 40px;
+    height: 40px;
+    animation-delay: 1.8s;
+    animation-duration: 9.5s;
+}
+
+.bg-bubbles li:nth-child(7) {
+    left: 70%;
+    width: 55px;
+    height: 55px;
+    animation-delay: 1s;
+    animation-duration: 8s;
+}
+
+.bg-bubbles li:nth-child(8) {
+    left: 80%;
+    width: 45px;
+    height: 45px;
+    animation-delay: 2s;
+    animation-duration: 10s;
+}
+
+.bg-bubbles li:nth-child(9) {
+    left: 90%;
+    width: 50px;
+    height: 50px;
+    animation-delay: 2.5s;
+    animation-duration: 9s;
+}
+
+.bg-bubbles li:nth-child(10) {
+    left: 95%;
+    width: 40px;
+    height: 40px;
+    animation-delay: 1.2s;
+    animation-duration: 8.5s;
+}
+  
+
+@-webkit-keyframes snowfall {
+    0% { transform: translateY(-100px); }
+    100% { transform: translateY(1000px) rotate(360deg); }
+}
+@keyframes snowfall {
+    0% { transform: translateY(-100px); }
+    100% { transform: translateY(1000px) rotate(360deg); }
+}
+.error-message {
+    color: red; /* エラーメッセージの色を赤に */
+    margin-top: 5px;
+    margin-bottom: 10px;
+    font-size: 0.8em; /* メッセージのフォントサイズ */
+}
