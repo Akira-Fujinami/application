@@ -152,12 +152,12 @@
                     </div>
                     <div class="container mt-4">
                         <div class="row"> 
-                            {{$photos[0]->photo_id}}
+
                         @for ($i = 0; $i < 5; $i++)
                             <div class="col-2">
                                 <div class="img-wrap" style="{{ isset($photos[$i]) ? 'border: none;' : '' }}">
                                     <img id="photo-preview-{{ $i }}" class="img-fluid" 
-                                        src="{{ isset($photos[$i]) ? Storage::url($photos[$i]->path) : '' }}" 
+                                        src="{{ isset($photos[$i]) ? Storage::url($photos[$i]) : '' }}" 
                                         style="{{ isset($photos[$i]) ? 'display:block;' : 'display:none;' }}">
                                     <div id="no-file-selected-{{ $i }}" class="no-file-text" 
                                         style="{{ isset($photos[$i]) ? 'display:none;' : 'display:block;' }}">未設定</div>
