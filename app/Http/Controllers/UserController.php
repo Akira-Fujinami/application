@@ -14,7 +14,8 @@ class UserController extends Controller
     public function showUserPage($userId){
         $user = User::findOrFail($userId);
         $userDetail = UserDetail::where('user_id', $userId)->first();
-        $photos = $user->photos()->get()->pluck('path');
+        $photos = $user->photos()->orderBy('photo_id', 'asc')->get()->pluck('path');
+        // dd($photos);
         $firstPhoto = isset($photos[0]) ? $photos[0] : null;
         // dd($firstPhoto);
         return view('user', ['user' => $user, 'userDetail' => $userDetail, 'photos' => $photos, 'firstPhoto' => $firstPhoto]);
@@ -23,7 +24,9 @@ class UserController extends Controller
     public function showProfilePage($authId){
         $user = User::findOrFail($authId);
         $userDetail = UserDetail::where('user_id', $authId)->first();
-        $photos = $user->photos()->get()->pluck('path');
+        $photos = $user->photos()->orderBy('photo_id', 'asc')->get();
+        // dd($photos);
+        // dd($sortedPhotos);
         return view('profile', ['user' => $user, 'photos' => $photos, 'userDetail' => $userDetail]);
     }
 
@@ -36,31 +39,39 @@ class UserController extends Controller
         for ($i = 0; $i < 5; $i++) {
             $photoFieldName = 'photos' . $i;
         
-            if ($request->hasFile($photoFieldName)) {
                 $photoFile = $request->file($photoFieldName);
-                $path = $photoFile->store('photos', 'public');
         
                 $existingPhoto = Photo::where('user_id', $id)
                                        ->where('photo_id', $photoFieldName)
                                        ->first();
-                // dd($existingPhoto);
-                if ($existingPhoto) {
-                    // 既存の写真のパスを更新
-                    Storage::disk('public')->delete($existingPhoto->path);
-                    $existingPhoto->path = $path;
-                    $existingPhoto->save();
-                } else {
-                    // 新しい写真の場合、新しいレコードを作成
+                if (!$existingPhoto) {
                     $user->photos()->create([
                         'photo_id' => $photoFieldName,
                         'user_id' => $id,
-                        'path' => $path,
+                        'path' => null,
                     ]);
-                    // dd($photoFieldName);
                 }
-            }
+                // dd($existingPhoto);
+                if ($request->hasFile($photoFieldName)) {
+                    $photoFile = $request->file($photoFieldName);
+                    $path = $photoFile->store('photos', 'public');
+        
+                    // 成功した場合のみデータベースを更新する
+                    if ($path) {
+                        $existingPhoto = Photo::where('user_id', $id)
+                                              ->where('photo_id', $photoFieldName)
+                                              ->first();
+        
+                        // 既存の写真のパスを更新
+                        if ($existingPhoto && $existingPhoto->path) {
+                            Storage::disk('public')->delete($existingPhoto->path);
+                        }
+                        $existingPhoto->path = $path;
+                        $existingPhoto->save();
+                    }
+                }
         }
-        $photos = $user->photos()->get();
+        $photos = $user->photos()->orderBy('photo_id', 'asc')->get();
 
 
         // 自己紹介文の更新

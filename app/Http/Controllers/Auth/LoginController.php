@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Photo;
+use App\Models\Like;
 use Illuminate\Http\Request;
 use Auth;
 
@@ -32,10 +33,15 @@ class LoginController extends Controller
             $photos = $user->photos()->get()->pluck('path');
             $user->firstPhoto = isset($photos[0]) ? $photos[0] : null;
         }
+        $likes = Like::where('user_id', Auth::user()->id)
+        ->pluck('liked_user_id')
+        ->toArray();
+        // dd($likes);
         $data = [
             'name' => $name,
             'users' => $users,
-            'usersNew' => $usersNew
+            'usersNew' => $usersNew,
+            'likes' => $likes,
         ];
         return view('top', $data);
     }

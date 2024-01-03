@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\LikeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,7 @@ Route::middleware('auth')->group(function () {
         Auth::logout();
         return redirect('/loginview');
     });
+    Route::get('/like/{authId}/{likedId}', [LikeController::class, 'store']);
 });
 
 // ...
