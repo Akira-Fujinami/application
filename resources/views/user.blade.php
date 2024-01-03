@@ -9,7 +9,7 @@
 
                     <!-- 写真アップロード -->
                     <div style="display: flex; align-items: center; margin-bottom: 20px;">
-                        <div style="margin-right: 20px; margin-top: -60px">
+                        <div style="margin-right: 40px; margin-top: -60px">
                             @if (!empty($firstPhoto))
                                 <img src="{{ Storage::url($firstPhoto) }}" style="width: 100px; height: auto;">
                             @elseif ($user->gender == 'male')
@@ -40,7 +40,7 @@
                         <div class="row"> 
                         @for ($i = 1; $i < 5; $i++)
                             <div class="col-2">
-                                <div>
+                                <div style="margin: 10px;">
                                     <img class="img-fluid" 
                                         src="{{ isset($photos[$i]) ? Storage::url($photos[$i]) : '' }}">
                                 </div>
@@ -60,9 +60,6 @@
                         <label for="bio"><strong>自己紹介文</strong></label>
                         <div>{{ isset($userDetail) ? $userDetail->introduction : '' }}</div>
                     </div>
-
-
-                    <button type="submit" class="btn btn-primary">更新</button>
                 </form>
             </div>
         </div>

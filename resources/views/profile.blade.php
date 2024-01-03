@@ -87,11 +87,13 @@
 
 </style>
 <script>
-    function previewImage(index) {
+function previewImage(index) {
     var input = document.getElementById('photo-upload-' + index);
     var preview = document.getElementById('photo-preview-' + index);
     var noFileText = document.getElementById('no-file-selected-' + index);
-    var imgWrap = preview.closest('.img-wrap');
+
+    if (preview) {
+        var imgWrap = preview.closest('.img-wrap');
 
         if (input.files && input.files[0]) {
             var reader = new FileReader();
@@ -107,9 +109,13 @@
         } else {
             preview.style.display = 'none';
             noFileText.style.display = 'block';
-            imgWrap.style.border = ''; // 写真がないときにデフォルトのスタイルを維持または追加
+            if (imgWrap) {
+                imgWrap.style.border = ''; // 写真がないときにデフォルトのスタイルを維持または追加
+            }
         }
     }
+}
+
 
 </script>   
     <div class="container mt-4">
@@ -155,18 +161,24 @@
 
                         @for ($i = 0; $i < 5; $i++)
                             <div class="col-2">
-                                <div class="img-wrap" style="{{ isset($photos[$i]) ? 'border: none;' : '' }}">
-                                    <img id="photo-preview-{{ $i }}" class="img-fluid" 
-                                        src="{{ isset($photos[$i]) ? Storage::url($photos[$i]) : '' }}" 
-                                        style="{{ isset($photos[$i]) ? 'display:block;' : 'display:none;' }}">
-                                    <div id="no-file-selected-{{ $i }}" class="no-file-text" 
-                                        style="{{ isset($photos[$i]) ? 'display:none;' : 'display:block;' }}">未設定</div>
+                                <div class="img-wrap" style="{{ isset($photos[$i]) && !is_null($photos[$i]->path) ? 'border: none;' : '' }}">
+                                    @if (isset($photos[$i]) && !is_null($photos[$i]->path))
+                                        <img id="photo-preview-{{ $i }}" class="img-fluid" 
+                                            src="{{ Storage::url($photos[$i]->path) }}" 
+                                            style="display:block;">
+                                    @else
+                                        <img id="photo-preview-{{ $i }}" class="img-fluid" 
+                                            style="display:none;">
+                                        <div id="no-file-selected-{{ $i }}" class="no-file-text" 
+                                            style="display:block;">未設定</div>
+                                    @endif
                                 </div>
                                 <input id="photo-upload-{{ $i }}" type="file" name="photos{{ $i }}" 
                                     style="display:block; opacity:0; width:100%; height:100%; position:absolute; left:0; top:0;"
                                     onchange="previewImage({{ $i }});" accept="image/*">
                             </div>
                         @endfor
+
 
                         </div>
                     </div>
