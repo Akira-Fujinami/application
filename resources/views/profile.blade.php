@@ -84,6 +84,72 @@
     background-color: #0056b3;
     border-color: #004085;
 }
+.image-container {
+    position: relative;
+    display: inline-block;
+}
+.hover-image-good {
+    position: absolute;
+    top: 50%;
+    left: 30%;
+    transform: translate(-50%, -50%);
+    width: 40%;  /* ホバー画像の幅を6%に設定 */
+    height: 40%; /* ホバー画像の高さを6%に設定 */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.hover-image-bad {
+    position: absolute;
+    top: 50%;
+    left: 80%;
+    transform: translate(-50%, -50%);
+    width: 40%;  /* ホバー画像の幅を6%に設定 */
+    height: 40%; /* ホバー画像の高さを6%に設定 */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.image-container:hover .hover-image-good {
+    opacity: 1;
+}
+.image-container:hover .hover-image-bad {
+    opacity: 1;
+}
+
+.profile-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    transition: 0.3s ease;
+}
+
+.image-container:hover .profile-image {
+    opacity: 0.7;
+}
+
+.fa-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    color: white;
+    display: none;
+}
+
+.image-container:hover .fa-icon {
+    display: block;
+}
+
 
 </style>
 <script>
@@ -193,8 +259,43 @@ function previewImage(index) {
                         <label for="bio">自己紹介文</label>
                         <textarea class="form-control textarea" id="bio" name="bio" rows="6">{{ isset($userDetail) ? $userDetail->introduction : '' }}</textarea>
                     </div>
-
-
+                    @foreach ($matches as $match)
+                        <div class="image-container">
+                            @if ($match -> id === $match->matchedPhoto->user_id)
+                                <img src="{{ Storage::url($match->matchedPhoto->path) }}" class="profile-image">
+                                @foreach ($likedUserIds as $likedUserId)
+                                    @if ($likedUserId -> return_id == 1)
+                                    1
+                                    @elseif ($likedUserId -> return_id == 2)
+                                    2
+                                    @endif
+                                <div>
+                                    <a href="/thanks/{{$match->matchedPhoto->user_id}}/{{Auth::user()->id}}/1">
+                                        <img src="/storage/いいねのアイコン素材 1.jpeg" class="hover-image-good">
+                                    </a>
+                                    <a href="/thanks/{{$match->matchedPhoto->user_id}}/{{Auth::user()->id}}/2">
+                                        <img src="/storage/badのアイコン.png" class="hover-image-bad">
+                                    </a>
+                                </div>
+                                @endforeach
+                            @elseif ($match -> gender == "male")
+                                <img src="/storage/20代の男性の顔.png" class="profile-image">
+                                <div>
+                                    <img src="/storage/いいねのアイコン素材 1.jpeg" class="hover-image-good">
+                                    <img src="/storage/badのアイコン.png" class="hover-image-bad">
+                                </div>
+                            @else
+                                <img src="/storage/20代の女性の顔.png" class="profile-image">
+                                <div>
+                                    <img src="/storage/いいねのアイコン素材 1.jpeg" class="hover-image-good">
+                                    <img src="/storage/badのアイコン.png" class="hover-image-bad">
+                                </div>
+                            @endif
+                        </div>
+                        <div>
+                            {{$match -> name}}
+                        </div>
+                    @endforeach
                     <button type="submit" class="btn btn-primary">更新</button>
                 </form>
             </div>

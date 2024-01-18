@@ -22,6 +22,10 @@ class LoginController extends Controller
             return redirect()->intended('/top');
         }
     }
+    public function loginView()
+    {
+        return view('loginView'); // ログインフォームのビューを表示する
+    }
     public function showTopPage(Request $request) {
         $userGender = auth()->user()->gender;
         $oppositeGender = $userGender === 'male' ? 'female' : 'male';

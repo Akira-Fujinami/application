@@ -12,7 +12,7 @@
             <h1>welcome</h1>
             <form>
                 @csrf
-                <a href="loginview">ログイン画面に戻る</a>
+                <a href="login">ログイン画面に戻る</a>
             </form>
             <ul class="bg-bubbles">
                 <li></li>

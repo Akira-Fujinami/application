@@ -25,18 +25,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile/{authId}', [UserController::class, 'showProfilePage']);
     Route::get('/logout', function () {
         Auth::logout();
-        return redirect('/loginview');
+        return redirect('/login');
     });
     Route::get('/like/{authId}/{likedId}', [LikeController::class, 'store']);
+    Route::get('/thanks/{likedId}/{authId}/{id}', [LikeController::class, 'update']);
+    Route::post('/thanks/{likedId}/{authId}/{id}', [LikeController::class, 'update']);
 });
 
 // ...
 
 // 未ログインのユーザーのみがアクセスできるルート
 Route::middleware('guest')->group(function () {
-    Route::get('/loginview', function () {
-        return view('loginview');
-    })->name('loginview');
     Route::get('/register', function () {
         return view('register');
     });
@@ -48,6 +47,10 @@ Route::middleware('guest')->group(function () {
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/register', function () {
+    return view('register');
+});
+Route::get('/login', [LoginController::class, 'loginView'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/newRegister', [RegisterController::class, 'store'])->name('newRegister');
 Route::get('/registerDone', function () {

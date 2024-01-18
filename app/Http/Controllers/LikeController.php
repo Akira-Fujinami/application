@@ -14,6 +14,7 @@ class LikeController extends Controller
 
         // いいねをデータベースに保存
         $likedGet = Like::where('user_id', $authId)->where('liked_user_id', $likedId)->first();
+        // dd($likedGet);
         if ($likedGet === null) {
             $like = new Like();
             $like->user_id = $authId;
@@ -24,5 +25,19 @@ class LikeController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    public function update($likedId, $authId, $id) {
+        // dd($id);
+        $likedGet = Like::where('user_id', $likedId)->where('liked_user_id', $authId)->first();
+        // dd($likedGet);
+        if ($id == 1){
+            $likedGet -> return_id = $id;
+        } elseif ($id == 2) {
+            $likedGet -> return_id = $id;
+        }
+
+        $likedGet->save();
+        return redirect()->back()->with('id', $id);
     }
 }
