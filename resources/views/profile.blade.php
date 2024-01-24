@@ -129,12 +129,9 @@
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    transition: 0.3s ease;
 }
 
-.image-container:hover .profile-image {
-    opacity: 0.7;
-}
+
 
 .fa-icon {
     position: absolute;
@@ -150,6 +147,35 @@
     display: block;
 }
 
+.darken-image {
+    filter: brightness(50%);
+}
+
+.overlay-text {
+    position: absolute;
+    top: 43%;
+    left: 40%;
+    transform: translate(-50%, -50%);
+    color: #fff; /* テキストの色 */
+    font-size: 19px; /* フォントサイズ */
+    font-weight: bold; /* フォントの太さ */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* テキストに影を追加 */
+    padding: 5px 10px; /* パディングを追加 */
+    border-radius: 5px; /* 角を丸くする */
+    font-family: 'Arial', sans-serif; /* フォントファミリーを指定 */
+}
+
+.photos-container {
+    display: flex;
+    flex-wrap: wrap; /* 複数行にまたがる場合に行を折り返す */
+    gap: 30px; /* 写真間の間隔 */
+    justify-content: center; /* 中央揃え */
+    align-items: flex-start; /* 上端揃え */
+}
+
+.center-text {
+    margin-left: 30px;
+}
 
 </style>
 <script>
@@ -259,45 +285,77 @@ function previewImage(index) {
                         <label for="bio">自己紹介文</label>
                         <textarea class="form-control textarea" id="bio" name="bio" rows="6">{{ isset($userDetail) ? $userDetail->introduction : '' }}</textarea>
                     </div>
-                    @foreach ($matches as $match)
-                        <div class="image-container">
-                            @if ($match -> id === $match->matchedPhoto->user_id)
-                                <img src="{{ Storage::url($match->matchedPhoto->path) }}" class="profile-image">
-                                @foreach ($likedUserIds as $likedUserId)
-                                    @if ($likedUserId -> return_id == 1)
-                                    1
-                                    @elseif ($likedUserId -> return_id == 2)
-                                    2
-                                    @endif
-                                <div>
-                                    <a href="/thanks/{{$match->matchedPhoto->user_id}}/{{Auth::user()->id}}/1">
-                                        <img src="/storage/いいねのアイコン素材 1.jpeg" class="hover-image-good">
-                                    </a>
-                                    <a href="/thanks/{{$match->matchedPhoto->user_id}}/{{Auth::user()->id}}/2">
-                                        <img src="/storage/badのアイコン.png" class="hover-image-bad">
-                                    </a>
-                                </div>
-                                @endforeach
-                            @elseif ($match -> gender == "male")
-                                <img src="/storage/20代の男性の顔.png" class="profile-image">
-                                <div>
-                                    <img src="/storage/いいねのアイコン素材 1.jpeg" class="hover-image-good">
-                                    <img src="/storage/badのアイコン.png" class="hover-image-bad">
-                                </div>
-                            @else
-                                <img src="/storage/20代の女性の顔.png" class="profile-image">
-                                <div>
-                                    <img src="/storage/いいねのアイコン素材 1.jpeg" class="hover-image-good">
-                                    <img src="/storage/badのアイコン.png" class="hover-image-bad">
-                                </div>
-                            @endif
-                        </div>
-                        <div>
-                            {{$match -> name}}
-                        </div>
-                    @endforeach
-                    <button type="submit" class="btn btn-primary">更新</button>
+                    <div>
+                        <button type="submit" class="btn btn-primary">更新</button>
+                    </div>
                 </form>
+                    <div class="photos-container">
+                        @foreach ($matches as $match)
+                            <div>
+                            <div class="center-text">
+                                {{$match -> name}}
+                            </div>
+                            <div class="image-container">
+                                @if ($match->matchedPhoto != null)
+                                    <img src="{{ Storage::url($match->matchedPhoto->path) }}" 
+                                        class="profile-image {{ $match->return_id != null ? 'darken-image' : '' }}">
+                                    <div>
+                                        @if ($match->return_id == null)
+                                            <a href="/thanks/{{$match->id}}/{{Auth::user()->id}}/1">
+                                                <img src="/storage/いいねのアイコン素材 1.jpeg" class="hover-image-good">
+                                            </a>
+                                            <a href="/thanks/{{$match->id}}/{{Auth::user()->id}}/2">
+                                                <img src="/storage/badのアイコン.png" class="hover-image-bad">
+                                            </a>
+                                        @elseif ($match->return_id == 1)
+                                            <a href="/thanks/{{$match->id}}/{{Auth::user()->id}}/3">マッチを解除する</a>
+                                            <div class="overlay-text">MATCH</div>
+                                        @elseif ($match->return_id == 2)
+                                            <a href="/thanks/{{$match->id}}/{{Auth::user()->id}}/1">ありがとうをする</a>
+                                            <div class="overlay-text">UNMATCH</div>
+                                        @endif
+                                    </div>
+                                @elseif ($match -> gender == "male")
+                                    <img src="/storage/20代の男性の顔.png" class="profile-image {{ $match->return_id != null ? 'darken-image' : '' }}">
+                                    <div>
+                                        @if ($match->return_id == null)
+                                            <a href="/thanks/{{$match->id}}/{{Auth::user()->id}}/1">
+                                                <img src="/storage/いいねのアイコン素材 1.jpeg" class="hover-image-good">
+                                            </a>
+                                            <a href="/thanks/{{$match->id}}/{{Auth::user()->id}}/2">
+                                                <img src="/storage/badのアイコン.png" class="hover-image-bad">
+                                            </a>
+                                        @elseif ($match->return_id == 1)
+                                            <a href="/thanks/{{$match->id}}/{{Auth::user()->id}}/3">マッチを解除する</a>
+                                            <div class="overlay-text">MATCH</div>
+                                        @elseif ($match->return_id == 2)
+                                            <a href="/thanks/{{$match->id}}/{{Auth::user()->id}}/1">ありがとうをする</a>
+                                            <div class="overlay-text">UNMATCH</div>
+                                        @endif
+                                    </div>
+                                @else
+                                    <img src="/storage/20代の女性の顔.png" class="profile-image {{ $match->return_id != null ? 'darken-image' : '' }}">
+                                    <div>
+                                        @if ($match->return_id == null)
+                                            <a href="/thanks/{{$match->id}}/{{Auth::user()->id}}/1">
+                                                <img src="/storage/いいねのアイコン素材 1.jpeg" class="hover-image-good">
+                                            </a>
+                                            <a href="/thanks/{{$match->id}}/{{Auth::user()->id}}/2">
+                                                <img src="/storage/badのアイコン.png" class="hover-image-bad">
+                                            </a>
+                                        @elseif ($match->return_id == 1)
+                                            <a href="/thanks/{{$match->id}}/{{Auth::user()->id}}/3">マッチを解除する</a>
+                                            <div class="overlay-text">MATCH</div>
+                                        @elseif ($match->return_id == 2)
+                                            <a href="/thanks/{{$match->id}}/{{Auth::user()->id}}/1">ありがとうをする</a>
+                                            <div class="overlay-text">UNMATCH</div>
+                                        @endif
+                                    </div>
+                                @endif
+                            </div>
+                            </div>
+                        @endforeach
+                    </div>
             </div>
         </div>
     </div>

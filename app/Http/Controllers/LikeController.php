@@ -35,9 +35,12 @@ class LikeController extends Controller
             $likedGet -> return_id = $id;
         } elseif ($id == 2) {
             $likedGet -> return_id = $id;
+        } elseif ($id == 3) {
+            $likedGet -> return_id = null;
         }
 
         $likedGet->save();
+        // dd($likedGet);
         return redirect()->back()->with('id', $id);
     }
 }

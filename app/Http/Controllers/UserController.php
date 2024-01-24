@@ -8,6 +8,7 @@ use App\Models\Photo;
 use App\Models\Like;
 use App\Models\UserDetail;
 use Illuminate\Support\Facades\Storage;
+use Auth;
 
 
 class UserController extends Controller
@@ -32,11 +33,12 @@ class UserController extends Controller
 
         // $matches = User::whereIn('id', $likedUsers)->with('Like')->get();
         // dd($matches);
-        $matches = User::join('likes', 'likes.liked_user_id', '=', 'users.id')
+        $matches = User::join('likes', 'likes.user_id', '=', 'users.id')
         ->whereIn('likes.user_id', $likedUsers)
         ->where('likes.liked_user_id', $authId)
         ->select('users.*', 'likes.return_id')
         ->get();
+        // dd($matches);
         foreach ($matches as $match) {
             $photo = Photo::where('user_id', $match->id)->orderBy('photo_id', 'asc')->first();
             $match->matchedPhoto = $photo; // 各ユーザーに対応する写真を追加
@@ -116,22 +118,26 @@ class UserController extends Controller
         $user->live = $request->live;
         $user->age = $request->age;
         $user->save();
-        $user = User::find($id);
-        $likedUsers = Like::where('liked_user_id', $id)->pluck('user_id');
-
-        $matches = User::whereIn('id', $likedUsers)->get();
         
-        foreach ($matches as $match) {
-            $photo = Photo::where('user_id', $match->id)->orderBy('photo_id', 'asc')->first();
-            $match->matchedPhoto = $photo; // 各ユーザーに対応する写真を追加
+        $userGender = auth()->user()->gender;
+        $oppositeGender = $userGender === 'male' ? 'female' : 'male';
+        $users = User::where('gender', $oppositeGender)->get();
+        $usersNew = User::where('gender', $oppositeGender)->orderBy('created_at', 'desc')->take(10)->get();
+        $name = $request->session()->get('name');
+        foreach ($users as $user) {
+            $photos = $user->photos()->get()->pluck('path');
+            $user->firstPhoto = isset($photos[0]) ? $photos[0] : null;
         }
-        
-        $likedUserIds = Like::where('liked_user_id', $id)->get();
-        // dd($matchedPhotos);
-        // dd($likedUser);
-        // dd($photos);
-        // $likedData = Like::where('liked_user_id', $id)->where('user_id', $matchedPhotos->user_id)->get();
-        // dd($likedData);
-        return view('profile', ['user' => $user, 'photos' => $photos, 'userDetail' => $userDetail, 'matches' => $matches, 'likedUsers' => $likedUsers, 'likedUserIds' => $likedUserIds]);
+        $likes = Like::where('user_id', Auth::user()->id)
+        ->pluck('liked_user_id')
+        ->toArray();
+        // dd($likes);
+        $data = [
+            'name' => $name,
+            'users' => $users,
+            'usersNew' => $usersNew,
+            'likes' => $likes,
+        ];
+        return view('top', $data);
     }
 }
