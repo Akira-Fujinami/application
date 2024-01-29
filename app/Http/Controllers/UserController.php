@@ -61,35 +61,42 @@ class UserController extends Controller
         // プロフィール写真の更新
         for ($i = 0; $i < 5; $i++) {
             $photoFieldName = 'photos' . $i;
+            // dd($photoFieldName);
         
                 $photoFile = $request->file($photoFieldName);
+                // dd($photoFile);
         
                 $existingPhoto = Photo::where('user_id', $id)
-                                       ->where('photo_id', $photoFieldName)
+                                       ->where('photo_id', $i)
                                        ->first();
+                // dd($existingPhoto);
                 if (!$existingPhoto) {
+                    // dd($user);
                     $user->photos()->create([
-                        'photo_id' => $photoFieldName,
+                        'photo_id' => $i,
                         'user_id' => $id,
                         'path' => null,
                     ]);
                 }
-                // dd($existingPhoto);
                 if ($request->hasFile($photoFieldName)) {
                     $photoFile = $request->file($photoFieldName);
+                    // dd($request);
                     $path = $photoFile->store('photos', 'public');
         
                     // 成功した場合のみデータベースを更新する
                     if ($path) {
+                        // dd($path);
                         $existingPhoto = Photo::where('user_id', $id)
-                                              ->where('photo_id', $photoFieldName)
+                                              ->where('photo_id', $i)
                                               ->first();
+                        // dd($existingPhoto);
         
                         // 既存の写真のパスを更新
                         if ($existingPhoto && $existingPhoto->path) {
                             Storage::disk('public')->delete($existingPhoto->path);
                         }
                         $existingPhoto->path = $path;
+                        // dd($existingPhoto);
                         $existingPhoto->save();
                     }
                 }
@@ -119,25 +126,36 @@ class UserController extends Controller
         $user->age = $request->age;
         $user->save();
         
-        $userGender = auth()->user()->gender;
-        $oppositeGender = $userGender === 'male' ? 'female' : 'male';
-        $users = User::where('gender', $oppositeGender)->get();
-        $usersNew = User::where('gender', $oppositeGender)->orderBy('created_at', 'desc')->take(10)->get();
-        $name = $request->session()->get('name');
-        foreach ($users as $user) {
-            $photos = $user->photos()->get()->pluck('path');
-            $user->firstPhoto = isset($photos[0]) ? $photos[0] : null;
+
+        $user = User::findOrFail($id);
+        $userDetail = UserDetail::where('user_id', $id)->first();
+        $photos = $user->photos()->orderBy('photo_id', 'asc')->get();
+        $likedUsers = Like::where('liked_user_id', $id)->pluck('user_id');
+        // dd($likedUsers);
+
+        // $matches = User::whereIn('id', $likedUsers)->with('Like')->get();
+        // dd($matches);
+        $matches = User::join('likes', 'likes.user_id', '=', 'users.id')
+        ->whereIn('likes.user_id', $likedUsers)
+        ->where('likes.liked_user_id', $id)
+        ->select('users.*', 'likes.return_id')
+        ->get();
+        // dd($matches);
+        foreach ($matches as $match) {
+            $photo = Photo::where('user_id', $match->id)->orderBy('photo_id', 'asc')->first();
+            $match->matchedPhoto = $photo; // 各ユーザーに対応する写真を追加
         }
-        $likes = Like::where('user_id', Auth::user()->id)
-        ->pluck('liked_user_id')
-        ->toArray();
-        // dd($likes);
-        $data = [
-            'name' => $name,
-            'users' => $users,
-            'usersNew' => $usersNew,
-            'likes' => $likes,
-        ];
-        return view('top', $data);
+        
+        $likedUserIds = Like::where('liked_user_id', $id)->get();
+        // dd($photos);
+
+        return back()->with([
+            'user' => $user, 
+            'photos' => $photos, 
+            'userDetail' => $userDetail, 
+            'matches' => $matches, 
+            'likedUsers' => $likedUsers, 
+            'likedUserIds' => $likedUserIds
+        ]);        
     }
 }

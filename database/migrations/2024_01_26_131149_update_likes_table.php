@@ -12,8 +12,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('likes', function (Blueprint $table) {
-            $table->unsignedBigInteger('thanks_id')->nullable();
-            $table->unsignedBigInteger('sorry_id')->nullable();
+            $table->unsignedBigInteger('return_id')->nullable();
         });
     }
 
@@ -23,8 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('likes', function (Blueprint $table) {
-            $table->dropColumn('thanks_id');
-            $table->dropColumn('sorry_id');
+            $table->dropColumn('return_id');
         });
     }
 };

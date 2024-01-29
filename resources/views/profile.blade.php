@@ -310,6 +310,9 @@ function previewImage(index) {
                                         @elseif ($match->return_id == 1)
                                             <a href="/thanks/{{$match->id}}/{{Auth::user()->id}}/3">マッチを解除する</a>
                                             <div class="overlay-text">MATCH</div>
+                                            <div>
+                                                <a href="/message/{{Auth::user()->id}}/{{$match->id}}">メッセージする</a>
+                                            </div>
                                         @elseif ($match->return_id == 2)
                                             <a href="/thanks/{{$match->id}}/{{Auth::user()->id}}/1">ありがとうをする</a>
                                             <div class="overlay-text">UNMATCH</div>
@@ -328,6 +331,9 @@ function previewImage(index) {
                                         @elseif ($match->return_id == 1)
                                             <a href="/thanks/{{$match->id}}/{{Auth::user()->id}}/3">マッチを解除する</a>
                                             <div class="overlay-text">MATCH</div>
+                                            <div>
+                                                <a href="/message/{{Auth::user()->id}}/{{$match->id}}">メッセージする</a>
+                                            </div>
                                         @elseif ($match->return_id == 2)
                                             <a href="/thanks/{{$match->id}}/{{Auth::user()->id}}/1">ありがとうをする</a>
                                             <div class="overlay-text">UNMATCH</div>
@@ -346,6 +352,9 @@ function previewImage(index) {
                                         @elseif ($match->return_id == 1)
                                             <a href="/thanks/{{$match->id}}/{{Auth::user()->id}}/3">マッチを解除する</a>
                                             <div class="overlay-text">MATCH</div>
+                                            <div>
+                                                <a href="/message/{{Auth::user()->id}}/{{$match->id}}">メッセージする</a>
+                                            </div>
                                         @elseif ($match->return_id == 2)
                                             <a href="/thanks/{{$match->id}}/{{Auth::user()->id}}/1">ありがとうをする</a>
                                             <div class="overlay-text">UNMATCH</div>

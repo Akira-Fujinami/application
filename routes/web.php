@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LikeController;
+use App\Http\Controllers\MessageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/like/{authId}/{likedId}', [LikeController::class, 'store']);
     Route::get('/thanks/{likedId}/{authId}/{id}', [LikeController::class, 'update']);
     Route::post('/thanks/{likedId}/{authId}/{id}', [LikeController::class, 'update']);
+    Route::get('/message/{authId}/{yourId}', [MessageController::class, 'messageView']);
 });
 
 // ...

@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('user_detail', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('oneWord');
-            $table->string('introduction');
-            $table->string('file_path');
+            $table->string('oneWord')->nullable();
+            $table->string('introduction')->nullable();
+            $table->string('file_path')->nullable();
             $table->string('description')->nullable();
             $table->timestamps();
         });
