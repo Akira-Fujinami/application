@@ -58,13 +58,18 @@
 
 
 </style>
+<form action="{{ route('message.insert', $user->id) }}" method="POST">
+    @csrf
     <div class="chat-container">
-        <div class="message left">Hi, how are you? - Alex</div>
-        <div class="message right">I'm good, thanks! And you? - Jamie</div>
-        <!-- Add more messages here -->
+        @foreach($messages as $message)
+            <div class="message {{ $message->my_id == Auth::user()->id ? 'right' : 'left' }}">
+                {{ $message->text }} - {{ $message->my_id == Auth::user()->id ? 'You' : 'Other' }}
+            </div>
+        @endforeach
         <div class="text-input">
-            <input type="text" placeholder="Type a message...">
-            <button>Send</button>
+            <input type="text" name="message" placeholder="Type a message...">
+            <button type="submit">Send</button>
         </div>
     </div>
+</form>
 @endsection
