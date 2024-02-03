@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/thanks/{likedId}/{authId}/{id}', [LikeController::class, 'update']);
     Route::post('/thanks/{likedId}/{authId}/{id}', [LikeController::class, 'update']);
     Route::get('/message/{authId}/{yourId}', [MessageController::class, 'messageView']);
+    Route::post('/messageInsert/{yourId}', [MessageController::class, 'insert'])->name('message.insert');
 });
 
 // ...

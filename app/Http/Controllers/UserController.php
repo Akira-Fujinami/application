@@ -82,6 +82,7 @@ class UserController extends Controller
                     $photoFile = $request->file($photoFieldName);
                     // dd($request);
                     $path = $photoFile->store('photos', 'public');
+                    // dd($path);
         
                     // 成功した場合のみデータベースを更新する
                     if ($path) {

@@ -302,7 +302,7 @@ function previewImage(index) {
                                     <div>
                                         @if ($match->return_id == null)
                                             <a href="/thanks/{{$match->id}}/{{Auth::user()->id}}/1">
-                                                <img src="/storage/いいねのアイコン素材 1.jpeg" class="hover-image-good">
+                                                <img src="/storage/いいねのアイコン素材.png" class="hover-image-good">
                                             </a>
                                             <a href="/thanks/{{$match->id}}/{{Auth::user()->id}}/2">
                                                 <img src="/storage/badのアイコン.png" class="hover-image-bad">
@@ -323,7 +323,7 @@ function previewImage(index) {
                                     <div>
                                         @if ($match->return_id == null)
                                             <a href="/thanks/{{$match->id}}/{{Auth::user()->id}}/1">
-                                                <img src="/storage/いいねのアイコン素材 1.jpeg" class="hover-image-good">
+                                                <img src="/storage/いいねのアイコン素材.png" class="hover-image-good">
                                             </a>
                                             <a href="/thanks/{{$match->id}}/{{Auth::user()->id}}/2">
                                                 <img src="/storage/badのアイコン.png" class="hover-image-bad">
@@ -344,7 +344,7 @@ function previewImage(index) {
                                     <div>
                                         @if ($match->return_id == null)
                                             <a href="/thanks/{{$match->id}}/{{Auth::user()->id}}/1">
-                                                <img src="/storage/いいねのアイコン素材 1.jpeg" class="hover-image-good">
+                                                <img src="/storage/いいねのアイコン素材.png" class="hover-image-good">
                                             </a>
                                             <a href="/thanks/{{$match->id}}/{{Auth::user()->id}}/2">
                                                 <img src="/storage/badのアイコン.png" class="hover-image-bad">
