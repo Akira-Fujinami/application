@@ -42,4 +42,11 @@ class MessageController extends Controller
             'messages' => $messages
         ]);
     }
+
+    public function getData(){  
+        $comments = Comment::orderBy('created_at', 'desc')->get();
+        $json = ["comments" => $comments];
+        return response()->json($json);
+    }
+
 }

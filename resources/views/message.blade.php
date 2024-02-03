@@ -55,8 +55,6 @@
     border: none;
     border-radius: 20px;
 }
-
-
 </style>
 <form action="{{ route('message.insert', $user->id) }}" method="POST">
     @csrf
@@ -72,4 +70,5 @@
         </div>
     </div>
 </form>
+<script src="{{ asset('js/message.js') }}"></script>
 @endsection
